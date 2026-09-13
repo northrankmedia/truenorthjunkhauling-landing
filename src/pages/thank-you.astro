@@ -1,0 +1,39 @@
+---
+// Reached only after a real form submission (GHL's "On Submit" action
+// redirects here). That makes this URL the correct target for the
+// "Request quote" Google Ads conversion, page-load-based detection here
+// actually means "someone submitted," unlike the homepage where it would
+// have meant "someone visited."
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { business } from "../data/business";
+---
+
+<BaseLayout
+  title="Quote Request Received | True North Junk Hauling"
+  description="Thanks for reaching out to True North Junk Hauling, we'll call or text you shortly to confirm your quote."
+  path="/thank-you"
+  noIndex={true}
+  logoHref="/"
+>
+  <section class="bg-pine-2 compass-watermark bg-[position:right_-140px_top_-140px] bg-[length:460px_460px] min-h-[70vh] flex items-center">
+    <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-20 text-center flex flex-col items-center gap-6">
+      <span class="reveal font-mono text-xs uppercase tracking-[0.25em] text-terracotta-light">Request Received</span>
+      <h1 class="reveal font-display text-4xl sm:text-5xl text-cream text-balance">
+        Got it, {`we're`} on it.
+      </h1>
+      <p class="reveal text-cream/80 text-lg max-w-lg">
+        We'll call or text you shortly at the number you gave us to confirm your quote and get you on the schedule.
+      </p>
+
+      <div class="reveal w-full max-w-sm border-t border-cream/15 pt-6 mt-2">
+        <p class="text-cream/60 text-sm">Need it faster, or easier to just talk it through?</p>
+        <a
+          href={business.phoneHref}
+          class="mt-4 inline-flex items-center justify-center gap-2 bg-terracotta hover:bg-terracotta-dark text-cream font-display text-xl tracking-wide px-8 py-4 transition-colors w-full sm:w-auto"
+        >
+          Call {business.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -8,7 +8,6 @@ export const business = {
   phone: "(662) 912-0777",
   phoneHref: "tel:+16629120777",
   smsHref: "sms:+16629120777",
-  email: "hello@truenorthjunkhauling.com",
   siteUrl: "https://site.truenorthjunkhauling.com",
   mainSiteUrl: "https://www.truenorthjunkhauling.com",
 } as const;

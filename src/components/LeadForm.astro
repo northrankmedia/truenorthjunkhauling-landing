@@ -1,121 +1,38 @@
 ---
-// Simplified from the main site's LeadForm: this microsite has one form, one
-// purpose, so no variant switching. Submission builds a mailto: link until
-// a real CRM endpoint exists, same interim approach as the main site, so a
-// real request actually reaches the business.
-import Icon from "./Icon.astro";
+// Real GHL form embed (form "Landing page lead form", id OlNyAA0ALn3E9R72hUb9).
+// On Submit is configured in GHL to redirect to /thank-you, that's also
+// what makes /thank-you the correct target for the Request quote Google
+// Ads conversion, a page load there only happens after a real submission.
 import { business } from "../data/business";
+
 interface Props {
   id?: string;
 }
-const { id = "lead-form" } = Astro.props;
+const { id = "lp-lead-form" } = Astro.props;
+const iframeId = `inline-${id}`;
 ---
 
-<form id={id} class="bg-paper border border-ink/10 p-6 sm:p-8 space-y-5" data-lead-form>
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-    <div>
-      <label for={`${id}-first`} class="block font-mono text-xs uppercase tracking-widest text-pine mb-1.5">First Name *</label>
-      <input id={`${id}-first`} name="firstName" type="text" required autocomplete="given-name"
-        class="w-full border border-ink/20 bg-cream px-4 py-3 text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-terracotta" />
-    </div>
-    <div>
-      <label for={`${id}-last`} class="block font-mono text-xs uppercase tracking-widest text-pine mb-1.5">Last Name *</label>
-      <input id={`${id}-last`} name="lastName" type="text" required autocomplete="family-name"
-        class="w-full border border-ink/20 bg-cream px-4 py-3 text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-terracotta" />
-    </div>
-  </div>
+<div class="bg-paper border border-ink/10 p-2 sm:p-3">
+  <iframe
+    src="https://link.northrankmedia.com/widget/form/OlNyAA0ALn3E9R72hUb9"
+    style="width:100%;height:676px;border:none;border-radius:4px;display:block"
+    id={iframeId}
+    data-layout="{'id':'INLINE'}"
+    data-trigger-type="alwaysShow"
+    data-trigger-value=""
+    data-activation-type="alwaysActivated"
+    data-activation-value=""
+    data-deactivation-type="neverDeactivate"
+    data-deactivation-value=""
+    data-form-name="Landing page lead form"
+    data-height="676"
+    data-layout-iframe-id={iframeId}
+    data-form-id="OlNyAA0ALn3E9R72hUb9"
+    data-cookie-consent="true"
+    data-cookie-consent-provider="auto"
+    title="Landing page lead form"
+  ></iframe>
+  <p class="text-center text-xs text-ink-faint py-3">Or skip the form: call or text {business.phone}</p>
+</div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-    <div>
-      <label for={`${id}-phone`} class="block font-mono text-xs uppercase tracking-widest text-pine mb-1.5">Phone *</label>
-      <input id={`${id}-phone`} name="phone" type="tel" required autocomplete="tel" placeholder="(662) 555-0100"
-        class="w-full border border-ink/20 bg-cream px-4 py-3 text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-terracotta" />
-    </div>
-    <div>
-      <label for={`${id}-email`} class="block font-mono text-xs uppercase tracking-widest text-pine mb-1.5">Email *</label>
-      <input id={`${id}-email`} name="email" type="email" required autocomplete="email"
-        class="w-full border border-ink/20 bg-cream px-4 py-3 text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-terracotta" />
-    </div>
-  </div>
-
-  <div>
-    <label for={`${id}-zip`} class="block font-mono text-xs uppercase tracking-widest text-pine mb-1.5">ZIP Code *</label>
-    <input id={`${id}-zip`} name="zip" type="text" inputmode="numeric" pattern="[0-9]{5}" required autocomplete="postal-code" placeholder="38655"
-      class="w-full border border-ink/20 bg-cream px-4 py-3 text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-terracotta" />
-  </div>
-
-  <p class="text-xs text-ink-soft leading-relaxed">
-    We'll text or call you back at the number above to confirm your quote. Message &amp; data rates may apply to that reply. See our <a href="/privacy" target="_blank" rel="noopener noreferrer" class="underline hover:text-terracotta-dark">Privacy Policy</a>.
-  </p>
-
-  <label class="flex items-start gap-3 text-xs text-ink-soft leading-relaxed">
-    <input type="checkbox" name="smsConsent" class="mt-1 w-4 h-4 accent-terracotta shrink-0" />
-    <span>
-      Also send me appointment reminders and occasional service updates by SMS. Message &amp; data rates may apply. Message frequency varies. Reply STOP to opt out, HELP for help. This isn't required to get a quote.
-    </span>
-  </label>
-
-  <button
-    type="submit"
-    class="w-full inline-flex items-center justify-center gap-2 bg-terracotta hover:bg-terracotta-dark text-cream font-display text-xl tracking-wide py-4 transition-colors"
-  >
-    Request My Free Quote <Icon name="phone" class="w-5 h-5" />
-  </button>
-
-  <p class="text-center text-xs text-ink-faint">Or skip the form: call or text {business.phone}</p>
-
-  <div data-lead-success class="hidden text-center py-8">
-    <p class="font-display text-2xl text-pine-2">Almost there.</p>
-    <p class="text-sm text-ink-soft mt-2">
-      Your email app should be opening now with your request pre-filled, just hit send and we'll get back to you. If nothing opened, call or text us directly at {business.phone} instead.
-    </p>
-  </div>
-</form>
-
-<script>
-  document.querySelectorAll<HTMLFormElement>("form[data-lead-form]").forEach((form) => {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (!form.reportValidity()) return;
-
-      const data = new FormData(form);
-      const get = (name: string) => (data.get(name) as string | null)?.trim() || "";
-      const first = get("firstName");
-      const last = get("lastName");
-      const phone = get("phone");
-      const email = get("email");
-      const zip = get("zip");
-      const smsConsent = data.get("smsConsent") ? "Yes" : "No";
-
-      const bodyLines = [
-        `Name: ${first} ${last}`,
-        `Phone: ${phone}`,
-        `Email: ${email}`,
-        `ZIP: ${zip}`,
-        `OK to send SMS updates: ${smsConsent}`,
-        `Source: site.truenorthjunkhauling.com (paid search landing page)`,
-      ];
-
-      const mailto = `mailto:hello@truenorthjunkhauling.com?subject=${encodeURIComponent(
-        `Quote request from ${first} ${last}`
-      )}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
-
-      window.location.href = mailto;
-
-      const fields = form.querySelectorAll("input, select, textarea, button, label, p:not([data-lead-success] p)");
-      fields.forEach((el) => {
-        if (!(el instanceof HTMLElement)) return;
-        if (el.closest("[data-lead-success]")) return;
-        el.style.display = "none";
-      });
-      const success = form.querySelector("[data-lead-success]");
-      success?.classList.remove("hidden");
-      success?.setAttribute("role", "status");
-      success?.setAttribute("aria-live", "polite");
-      if (success instanceof HTMLElement) {
-        success.tabIndex = -1;
-        success.focus();
-      }
-    });
-  });
-</script>
+<script is:inline src="https://link.northrankmedia.com/js/form_embed.js"></script>
