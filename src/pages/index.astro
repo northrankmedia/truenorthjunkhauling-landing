@@ -1,0 +1,74 @@
+---
+// Paid-search landing page for the "Junk Removal Oxford MS" Google Ads
+// campaign, served from its own subdomain (site.truenorthjunkhauling.com).
+// Two actions only: call the number or fill out the form, form sits
+// directly in the hero, visible with zero scrolling.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TrustBadgeRow from "../components/TrustBadgeRow.astro";
+import LeadForm from "../components/LeadForm.astro";
+import Icon from "../components/Icon.astro";
+import { business, reviewStats } from "../data/business";
+---
+
+<BaseLayout
+  title="Junk Removal in Oxford, MS | Same-Day Pickup"
+  description="Same-day junk removal in Oxford and Lafayette County, MS. Flat-rate pricing from $199, licensed & insured, 5.0 rated. Call now or get a free online quote."
+  path="/"
+>
+  <!-- HERO -->
+  <section class="relative bg-pine-2 overflow-hidden lg:compass-watermark lg:bg-[position:right_-140px_top_-140px] lg:bg-[length:480px_480px]">
+    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-16 sm:pt-20 sm:pb-24">
+      <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-12 items-center">
+        <div class="text-center lg:text-left flex flex-col items-center lg:items-start">
+          <span class="stamp-in stamp-in-1 inline-block font-mono text-xs uppercase tracking-[0.25em] text-terracotta-light mb-5">
+            Oxford, MS &amp; Lafayette County
+          </span>
+          <h1 class="font-display text-cream">
+            <span class="stamp-in stamp-in-1 block text-[clamp(2.4rem,9vw,4.2rem)] leading-[0.92]">Junk Removal,</span>
+            <span class="stamp-in stamp-in-2 block text-[clamp(2.4rem,9vw,4.2rem)] leading-[0.92] text-terracotta">Same-Day</span>
+          </h1>
+          <p class="stamp-in stamp-in-3 text-cream/75 text-lg mt-6 max-w-md leading-relaxed">
+            Flat-rate pricing from $199, licensed and insured. The price we quote is the price you pay.
+          </p>
+
+          <div class="stamp-in stamp-in-3 flex items-center gap-1.5 mt-4">
+            <div class="flex gap-0.5 text-terracotta">
+              {Array.from({ length: Math.round(reviewStats.ratingValue) }).map(() => (
+                <Icon name="star" class="w-4 h-4" />
+              ))}
+            </div>
+            <span class="font-mono text-xs text-cream/70">
+              {reviewStats.ratingValue.toFixed(1)} on Google &middot; {reviewStats.reviewCount} reviews
+            </span>
+          </div>
+
+          <a
+            href={business.phoneHref}
+            class="stamp-in stamp-in-4 group mt-8 inline-flex flex-col items-center gap-1 bg-terracotta hover:bg-terracotta-dark text-cream px-10 py-6 transition-colors w-full sm:w-auto"
+          >
+            <span class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-cream/85">
+              <Icon name="phone" class="w-4 h-4" /> Call Now, Free Quote
+            </span>
+            <span class="font-display text-4xl sm:text-5xl tracking-wide leading-none mt-1">{business.phone}</span>
+          </a>
+
+          <a href="#quote" class="stamp-in stamp-in-4 mt-5 font-mono text-xs uppercase tracking-widest text-cream/60 hover:text-cream transition-colors lg:hidden">
+            Or fill out the form ↓
+          </a>
+
+          <div class="mt-10 w-full max-w-md">
+            <TrustBadgeRow />
+          </div>
+        </div>
+
+        <div id="quote" class="stamp-in stamp-in-2 scroll-mt-24">
+          <p class="font-mono text-xs uppercase tracking-widest text-terracotta-light mb-1.5">Free, No-Obligation Quote</p>
+          <h2 class="font-display text-2xl text-cream mb-5">Get your price in one call</h2>
+          <div class="shadow-2xl shadow-pine-2/40">
+            <LeadForm id="lp-lead" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

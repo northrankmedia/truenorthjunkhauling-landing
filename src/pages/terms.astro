@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { business, pricingTiers } from "../data/business";
+
+const lastUpdated = "September 13, 2026";
+---
+
+<BaseLayout
+  title="Terms & Conditions | True North Junk Hauling"
+  description="The terms that apply when you book a job with True North Junk Hauling: pricing, scheduling, what we don't take, and how disputes are handled."
+  path="/terms"
+  noIndex={false}
+  logoHref="/"
+>
+  <section class="bg-pine-2 compass-watermark bg-[position:right_-140px_top_-140px] bg-[length:460px_460px]">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-16 pb-16 sm:pt-24 sm:pb-20 text-center flex flex-col items-center gap-5">
+      <span class="reveal font-mono text-xs uppercase tracking-[0.25em] text-terracotta-light">Legal</span>
+      <h1 class="reveal font-display text-5xl sm:text-6xl text-cream">Terms &amp; Conditions</h1>
+      <p class="reveal text-cream/75 max-w-xl">Last updated {lastUpdated}</p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+    <div class="reveal space-y-8 text-ink leading-relaxed">
+      <p>
+        These terms apply whenever you call, text, or submit the quote form on this page to book a job with True North Junk Hauling ("we," "us," "our"), a locally owned junk removal business serving Oxford, MS and Lafayette County. By booking a pickup, you agree to the terms below.
+      </p>
+
+      <div>
+        <h2 class="font-display text-2xl text-pine-2 mb-3">Pricing &amp; Quotes</h2>
+        <p>
+          We price by volume-based flat-rate tiers, not by the hour: {pricingTiers.map((t) => `${t.name} (${t.price})`).join(", ")}. The price we give you over the phone or by text is based on your own description of the job. We confirm the final price in person, before we touch anything, once we can see the actual volume.
+        </p>
+        <p class="mt-3">
+          If what's on-site clearly matches what you described, the on-site price matches the phone quote. If the actual job is materially larger or different from what was described, we'll tell you the revised price before starting, not after.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-2xl text-pine-2 mb-3">Scheduling &amp; Same-Day Availability</h2>
+        <p>
+          Same-day pickup is offered on a best-effort basis and depends on the time of your call and our current schedule. We'll always give you a realistic time window, we don't guarantee a specific hour of arrival, but we do call or text ahead when we're on our way.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-2xl text-pine-2 mb-3">What We Don't Take</h2>
+        <p>
+          We do not accept hazardous materials, including but not limited to paint, chemicals, asbestos, or materials confirmed to contain lead-based paint. If a job includes items we can't legally haul, we'll identify them on-site and quote the rest of the job separately.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-2xl text-pine-2 mb-3">Payment</h2>
+        <p>
+          Payment is due at the time of service, once the final price is confirmed on-site. We don't collect payment information through this website; payment is handled in person or by phone at the time of pickup.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-2xl text-pine-2 mb-3">Cancellations</h2>
+        <p>
+          You can cancel or reschedule a booked pickup at no charge by calling or texting us as soon as you know, ideally before our crew is already en route.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-2xl text-pine-2 mb-3">Governing Law</h2>
+        <p>
+          These terms are governed by the laws of the State of Mississippi, without regard to conflict-of-law principles.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-2xl text-pine-2 mb-3">Changes to These Terms</h2>
+        <p>
+          We may update these terms from time to time as our services change. The date at the top of this page reflects the most recent update.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-2xl text-pine-2 mb-3">Contact Us</h2>
+        <p>
+          Questions about these terms? Call or text {business.phone}, or email {business.email}. See also our <a href="/privacy" class="text-terracotta-dark hover:text-terracotta underline">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

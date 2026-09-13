@@ -1,0 +1,35 @@
+---
+// Non-clickable by default (no href passed): on the main conversion page,
+// the logo is a static brand mark, not an exit path, matching the "nothing
+// but the phone and the form" rule for that one page. Pages that AREN'T the
+// money page (privacy, terms) should pass href="/" so a visitor actually has
+// a way back, those are utility pages, not the ad-matched page itself.
+interface Props {
+  variant?: "dark" | "light";
+  class?: string;
+  href?: string;
+}
+const { variant = "dark", class: className = "", href } = Astro.props;
+const ring = variant === "dark" ? "text-pine" : "text-cream";
+const wordTop = variant === "dark" ? "text-pine-2" : "text-cream";
+const wordBottom = variant === "dark" ? "text-terracotta" : "text-terracotta-light";
+const Tag = href ? "a" : "span";
+---
+
+<Tag
+  href={href}
+  class={`flex items-center gap-3 ${className}`}
+  aria-label="True North Junk Hauling home"
+>
+  <span class={`relative shrink-0 grid place-items-center w-11 h-11 rounded-full border-2 ${ring} border-current`}>
+    <svg viewBox="0 0 24 24" class="w-6 h-6" fill="currentColor" aria-hidden="true">
+      <path d="M12 2 L14.4 11 L12 12 L9.6 11 Z" />
+      <path d="M12 22 L9.6 13 L12 12 L14.4 13 Z" opacity="0.4" />
+    </svg>
+    <span class="absolute -top-1 left-1/2 -translate-x-1/2 font-mono text-[7px] tracking-widest">N</span>
+  </span>
+  <span class="leading-none font-display">
+    <span class={`block text-xl tracking-tight ${wordTop}`}>True North</span>
+    <span class={`block text-[11px] font-mono normal-case tracking-[0.2em] ${wordBottom}`}>Junk Hauling</span>
+  </span>
+</Tag>
