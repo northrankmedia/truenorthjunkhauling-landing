@@ -3,6 +3,11 @@
 // On Submit is configured in GHL to redirect to /thank-you, that's also
 // what makes /thank-you the correct target for the Request quote Google
 // Ads conversion, a page load there only happens after a real submission.
+//
+// The iframe itself takes several seconds to render (cross-origin, its own
+// JS boots inside), so it starts hidden behind a skeleton that matches the
+// real field layout, this is a paid-traffic page, a blank white box reads
+// as broken, not "loading."
 import { business } from "../data/business";
 
 interface Props {
@@ -13,26 +18,55 @@ const iframeId = `inline-${id}`;
 ---
 
 <div class="bg-paper border border-ink/10 p-2 sm:p-3">
-  <iframe
-    src="https://link.northrankmedia.com/widget/form/OlNyAA0ALn3E9R72hUb9"
-    style="width:100%;height:676px;border:none;border-radius:4px;display:block"
-    id={iframeId}
-    data-layout="{'id':'INLINE'}"
-    data-trigger-type="alwaysShow"
-    data-trigger-value=""
-    data-activation-type="alwaysActivated"
-    data-activation-value=""
-    data-deactivation-type="neverDeactivate"
-    data-deactivation-value=""
-    data-form-name="Landing page lead form"
-    data-height="676"
-    data-layout-iframe-id={iframeId}
-    data-form-id="OlNyAA0ALn3E9R72hUb9"
-    data-cookie-consent="true"
-    data-cookie-consent-provider="auto"
-    title="Landing page lead form"
-  ></iframe>
+  <div class="relative" style="min-height:676px">
+    <div data-form-skeleton class="absolute inset-0 flex flex-col gap-4 p-4 animate-pulse" aria-hidden="true">
+      <div class="h-3 w-24 bg-ink/10 rounded"></div>
+      <div class="h-11 w-full bg-ink/10 rounded"></div>
+      <div class="h-3 w-24 bg-ink/10 rounded"></div>
+      <div class="h-11 w-full bg-ink/10 rounded"></div>
+      <div class="h-3 w-24 bg-ink/10 rounded"></div>
+      <div class="h-11 w-full bg-ink/10 rounded"></div>
+      <div class="h-3 w-24 bg-ink/10 rounded"></div>
+      <div class="h-11 w-full bg-ink/10 rounded"></div>
+      <div class="h-12 w-full bg-ink/15 rounded mt-2"></div>
+      <p class="text-center text-xs text-ink-faint mt-1">Loading your quote form...</p>
+    </div>
+    <iframe
+      src="https://link.northrankmedia.com/widget/form/OlNyAA0ALn3E9R72hUb9"
+      style="width:100%;height:676px;border:none;border-radius:4px;display:block;opacity:0;transition:opacity .35s ease"
+      id={iframeId}
+      data-layout="{'id':'INLINE'}"
+      data-trigger-type="alwaysShow"
+      data-trigger-value=""
+      data-activation-type="alwaysActivated"
+      data-activation-value=""
+      data-deactivation-type="neverDeactivate"
+      data-deactivation-value=""
+      data-form-name="Landing page lead form"
+      data-height="676"
+      data-layout-iframe-id={iframeId}
+      data-form-id="OlNyAA0ALn3E9R72hUb9"
+      data-cookie-consent="true"
+      data-cookie-consent-provider="auto"
+      title="Landing page lead form"
+    ></iframe>
+  </div>
   <p class="text-center text-xs text-ink-faint py-3">Or skip the form: call or text {business.phone}</p>
 </div>
 
 <script is:inline src="https://link.northrankmedia.com/js/form_embed.js"></script>
+<script define:vars={{ iframeId }}>
+  const revealForm = () => {
+    const frame = document.getElementById(iframeId);
+    const skeleton = frame?.parentElement?.querySelector("[data-form-skeleton]");
+    if (frame) frame.style.opacity = "1";
+    if (skeleton) skeleton.style.display = "none";
+  };
+  const frame = document.getElementById(iframeId);
+  // iframe "load" fires once GHL's own page has booted inside it, close
+  // enough to "form visible" for this to feel intentional rather than stuck.
+  frame?.addEventListener("load", revealForm);
+  // Hard fallback: never leave the skeleton up forever if load never fires
+  // (e.g. blocked by an ad blocker), reveal whatever's there after 8s.
+  setTimeout(revealForm, 8000);
+</script>
