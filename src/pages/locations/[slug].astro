@@ -1,0 +1,32 @@
+---
+// Sitelink pages, one per real Google Ads-targeted location. Same hero/form
+// pattern as the homepage, plus real town-specific content below the fold.
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ConversionHero from "../../components/ConversionHero.astro";
+import PageDetails from "../../components/PageDetails.astro";
+import { serviceAreaPages } from "../../data/serviceAreas";
+
+export function getStaticPaths() {
+  return serviceAreaPages.map((area) => ({
+    params: { slug: area.slug },
+    props: { area },
+  }));
+}
+
+const { area } = Astro.props;
+---
+
+<BaseLayout
+  title={`Junk Removal in ${area.name} | True North Junk Hauling`}
+  description={area.intro}
+  path={`/locations/${area.slug}`}
+>
+  <ConversionHero
+    eyebrow="Same-Day Junk Removal"
+    headlineTop="Junk Removal in"
+    headlineAccent={area.headlineAccent}
+    blurb={area.intro}
+    formId={`loc-${area.slug}`}
+  />
+  <PageDetails description={area.localNote} faqs={area.faqs} />
+</BaseLayout>

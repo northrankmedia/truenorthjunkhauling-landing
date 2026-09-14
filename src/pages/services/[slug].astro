@@ -1,0 +1,34 @@
+---
+// Sitelink pages, one per real service category. Same hero/form pattern as
+// the homepage (this IS a conversion page, not an informational one), plus
+// real service-specific content below the fold. logo stays non-clickable
+// here too, same "nothing but the phone and the form" rule as the homepage.
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ConversionHero from "../../components/ConversionHero.astro";
+import PageDetails from "../../components/PageDetails.astro";
+import { servicePages } from "../../data/services";
+
+export function getStaticPaths() {
+  return servicePages.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+---
+
+<BaseLayout
+  title={`${service.shortName} | True North Junk Hauling`}
+  description={service.heroBlurb}
+  path={`/services/${service.slug}`}
+>
+  <ConversionHero
+    eyebrow={`${service.shortName} · Oxford, MS & Lafayette County`}
+    headlineTop={service.headlineTop}
+    headlineAccent={service.headlineAccent}
+    blurb={service.heroBlurb}
+    formId={`svc-${service.slug}`}
+  />
+  <PageDetails description={service.description} pricingNote={service.pricingNote} faqs={service.faqs} />
+</BaseLayout>

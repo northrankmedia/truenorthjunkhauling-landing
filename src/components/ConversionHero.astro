@@ -1,0 +1,76 @@
+---
+// Shared hero for every paid-traffic entry page (home, and now the
+// service/location sitelink pages): same phone+form structure and same
+// stamp-in animation timing as index.astro, only the eyebrow/headline/blurb
+// text changes per page. Keeps every entry point converting the same way
+// instead of drifting into templated-feeling duplicates.
+import TrustBadgeRow from "./TrustBadgeRow.astro";
+import LeadForm from "./LeadForm.astro";
+import Icon from "./Icon.astro";
+import { business, reviewStats } from "../data/business";
+
+interface Props {
+  eyebrow: string;
+  headlineTop: string;
+  headlineAccent: string;
+  blurb: string;
+  formId: string;
+}
+const { eyebrow, headlineTop, headlineAccent, blurb, formId } = Astro.props;
+---
+
+<section class="relative bg-pine-2 overflow-hidden lg:compass-watermark lg:bg-[position:right_-140px_top_-140px] lg:bg-[length:480px_480px]">
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-16 sm:pt-20 sm:pb-24">
+    <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-12 items-center">
+      <div class="text-center lg:text-left flex flex-col items-center lg:items-start">
+        <span class="stamp-in stamp-in-1 inline-block font-mono text-xs uppercase tracking-[0.25em] text-terracotta-light mb-5">
+          {eyebrow}
+        </span>
+        <h1 class="font-display text-cream">
+          <span class="stamp-in stamp-in-1 block text-[clamp(2.4rem,9vw,4.2rem)] leading-[0.92]">{headlineTop}</span>
+          <span class="stamp-in stamp-in-2 block text-[clamp(2.4rem,9vw,4.2rem)] leading-[0.92] text-terracotta">{headlineAccent}</span>
+        </h1>
+        <p class="stamp-in stamp-in-3 text-cream/75 text-lg mt-6 max-w-md leading-relaxed">
+          {blurb}
+        </p>
+
+        <div class="stamp-in stamp-in-3 flex items-center gap-1.5 mt-4">
+          <div class="flex gap-0.5 text-terracotta">
+            {Array.from({ length: Math.round(reviewStats.ratingValue) }).map(() => (
+              <Icon name="star" class="w-4 h-4" />
+            ))}
+          </div>
+          <span class="font-mono text-xs text-cream/70">
+            {reviewStats.ratingValue.toFixed(1)} on Google &middot; {reviewStats.reviewCount} reviews
+          </span>
+        </div>
+
+        <a
+          href={business.phoneHref}
+          class="stamp-in stamp-in-4 group mt-8 inline-flex flex-col items-center gap-1 bg-terracotta hover:bg-terracotta-dark text-cream px-10 py-6 transition-colors w-full sm:w-auto"
+        >
+          <span class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-cream/85">
+            <Icon name="phone" class="w-4 h-4" /> Call Now, Free Quote
+          </span>
+          <span class="font-display text-4xl sm:text-5xl tracking-wide leading-none mt-1">{business.phone}</span>
+        </a>
+
+        <a href="#quote" class="stamp-in stamp-in-4 mt-5 font-mono text-xs uppercase tracking-widest text-cream/60 hover:text-cream transition-colors lg:hidden">
+          Or fill out the form ↓
+        </a>
+
+        <div class="mt-10 w-full max-w-md">
+          <TrustBadgeRow />
+        </div>
+      </div>
+
+      <div id="quote" class="stamp-in stamp-in-2 scroll-mt-24">
+        <p class="font-mono text-xs uppercase tracking-widest text-terracotta-light mb-1.5">Free, No-Obligation Quote</p>
+        <h2 class="font-display text-2xl text-cream mb-5">Get your price in one call</h2>
+        <div class="shadow-2xl shadow-pine-2/40">
+          <LeadForm id={formId} />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

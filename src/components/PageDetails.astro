@@ -1,0 +1,36 @@
+---
+// Below-the-fold content block shared by every service/location sitelink
+// page: a real descriptive paragraph, an optional pricing note, and 2 FAQs.
+// Same typography as the Privacy/Terms pages for consistency.
+interface Props {
+  description: string;
+  pricingNote?: string;
+  faqs: { q: string; a: string }[];
+}
+const { description, pricingNote, faqs } = Astro.props;
+---
+
+<section class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+  <div class="reveal space-y-8 text-ink leading-relaxed">
+    <p>{description}</p>
+
+    {pricingNote && (
+      <div class="bg-pine-mist border border-pine/15 px-5 py-4">
+        <p class="font-mono text-xs uppercase tracking-widest text-pine mb-1.5">Pricing</p>
+        <p class="text-ink-soft">{pricingNote}</p>
+      </div>
+    )}
+
+    <div>
+      <h2 class="font-display text-2xl text-pine-2 mb-4">Common Questions</h2>
+      <div class="space-y-6">
+        {faqs.map((faq) => (
+          <div>
+            <p class="font-medium text-ink">{faq.q}</p>
+            <p class="text-ink-soft mt-1">{faq.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
