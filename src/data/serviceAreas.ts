@@ -1,8 +1,14 @@
-// Real content for the 4 location sitelink pages, matching the 4 places
-// actually targeted in Google Ads Locations settings, trimmed from the main
-// site's src/data/towns.ts (Oxford, Water Valley, Batesville) plus the
-// Lafayette County blurb from its src/data/business.ts. Keep in sync by
-// hand if the source facts change.
+// Real content for all 6 location sitelink pages, the full service-area
+// town list from the main site's src/data/business.ts serviceAreaTowns,
+// not just the 4 separately targetable in Google Ads Locations settings
+// (University and Abbeville aren't their own targetable entities there,
+// University resolves inside Oxford's boundary and Abbeville inside
+// Lafayette County's, but both are still real places the ad already
+// reaches, and still worth a dedicated, specific sitelink page). Content
+// trimmed from the main site's src/data/towns.ts (Oxford, University,
+// Water Valley, Batesville) plus the Lafayette County/Abbeville blurbs
+// from its src/data/business.ts. Keep in sync by hand if the source facts
+// change.
 
 export type ServiceAreaPage = {
   slug: string;
@@ -30,6 +36,44 @@ export const serviceAreaPages: ServiceAreaPage[] = [
       {
         q: "Do you service both in-town and the outer Oxford subdivisions?",
         a: "Yes, everywhere from the Square to the subdivisions off Highway 6 and beyond is within our standard Oxford service area.",
+      },
+    ],
+  },
+  {
+    slug: "university",
+    name: "University, MS",
+    headlineAccent: "University, MS",
+    intro:
+      "The University area, campus, the Grove, and the dense student housing corridor along Old Taylor Road, Jackson Avenue, and Molly Barr, has a completely different rhythm than the rest of Oxford. Move-out weekends hit hard, dumpsters overflow within a day, and the calendar that matters here isn't the seasons, it's the Ole Miss academic year.",
+    localNote:
+      "This is where our Student Move-Out service gets used the most. We schedule extra crews around the actual Ole Miss move-out dates each May and August, because complex dumpsters here fill up within hours once move-out weekend starts, and waiting isn't really an option for a lease that ends on a specific day.",
+    faqs: [
+      {
+        q: "How far in advance should I book for move-out weekend?",
+        a: "As early as you can. Move-out weekend is our highest-demand stretch of the year, calling a few weeks ahead guarantees you a slot instead of waiting behind the crunch.",
+      },
+      {
+        q: "Do you work with Ole Miss Greek housing and off-campus complexes?",
+        a: "Yes, we service the full range of student housing near campus, from large apartment complexes to individual off-campus houses and Greek housing.",
+      },
+    ],
+  },
+  {
+    slug: "abbeville",
+    name: "Abbeville, MS",
+    headlineAccent: "Abbeville, MS",
+    intro:
+      "Abbeville sits along Highway 7 in the north part of Lafayette County, a regular stop for furniture, appliance, and property cleanout calls just outside Oxford's city limits.",
+    localNote:
+      "Abbeville calls tend to be a mix of standard household pickups and the occasional larger property cleanout, similar to the rest of rural Lafayette County. We route Abbeville pickups alongside our other Highway 7 corridor stops.",
+    faqs: [
+      {
+        q: "Do you charge extra to service Abbeville since it's outside Oxford?",
+        a: "No separate travel fee for standard Abbeville service. Pricing is based on load size the same way it is everywhere else in our service area.",
+      },
+      {
+        q: "How often do you have crews near Abbeville?",
+        a: "Regularly, as part of our Highway 7 corridor route. Call or text and we'll give you the next available window.",
       },
     ],
   },
