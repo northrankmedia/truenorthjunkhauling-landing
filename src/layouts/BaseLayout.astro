@@ -37,6 +37,41 @@ const fullTitle = title.includes("True North") ? title : `${title} | True North 
       gtag('js', new Date());
       gtag('config', 'AW-18447548524');
     </script>
+    <!-- Call-forwarding conversion ("Calls from website (call forwarding)"):
+         for visitors who came from an ad, Google serves a forwarding number
+         that rings through to the real line and logs calls of 60s+, including
+         ones dialed by hand. The callback swaps both the visible number text
+         and the tel: hrefs (the default swap only touches text). sms: links
+         keep the real number, forwarding numbers can't receive texts. -->
+    <script is:inline>
+      gtag('config', 'AW-18447548524/sQLsCOCt1osdEOyAvdxE', {
+        'phone_conversion_number': '(662) 912-0777',
+        'phone_conversion_callback': function (formattedNumber, mobileNumber) {
+          if (!formattedNumber) return;
+          var swap = function () {
+            var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            var node;
+            while ((node = walker.nextNode())) {
+              var tag = node.parentNode && node.parentNode.nodeName;
+              if (tag === 'SCRIPT' || tag === 'STYLE') continue;
+              if (node.nodeValue.indexOf('(662) 912-0777') !== -1) {
+                node.nodeValue = node.nodeValue.split('(662) 912-0777').join(formattedNumber);
+              }
+            }
+            var digits = String(mobileNumber || formattedNumber).replace(/[^\d+]/g, '');
+            if (digits.charAt(0) !== '+') digits = '+1' + digits.replace(/^1/, '');
+            document.querySelectorAll('a[href^="tel:+16629120777"]').forEach(function (a) {
+              a.setAttribute('href', 'tel:' + digits);
+            });
+          };
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', swap);
+          } else {
+            swap();
+          }
+        }
+      });
+    </script>
     <!-- Click-to-call conversion: fires on any tel: link, header, hero,
          sticky mobile bar, thank-you page, without needing an onclick
          attribute on each one individually. Tel: links don't unload the
