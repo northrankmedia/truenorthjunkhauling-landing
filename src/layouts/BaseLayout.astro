@@ -44,7 +44,9 @@ const fullTitle = title.includes("True North") ? title : `${title} | True North 
          event is reliable here. -->
     <script is:inline>
       document.addEventListener('click', function (e) {
-        var link = e.target.closest('a[href^="tel:"]');
+        // sms: links (the mobile "Text" button) count too: a text is the
+        // same lead as a call for this business, and it was untracked.
+        var link = e.target.closest('a[href^="tel:"], a[href^="sms:"]');
         if (!link || typeof gtag !== 'function') return;
         gtag('event', 'conversion', {
           'send_to': 'AW-18447548524/tMJpCIjv6fccEOyAvdxE',

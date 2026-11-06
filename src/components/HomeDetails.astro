@@ -1,0 +1,174 @@
+---
+// Below-the-fold content for the main paid-search landing page. Added
+// 2026-11-06 because the page was a single hero (63 words): too thin for
+// Google to match it to the campaign's keywords (Quality Score) and too thin
+// for a cold visitor to trust. Everything here comes from facts already in
+// this repo (services, towns, pricing tiers, FAQs) plus real Google reviews.
+// The hero and its form stay exactly as they were, above the fold.
+import Icon from "./Icon.astro";
+import { business, pricingTiers, reviewStats, googleReviews } from "../data/business";
+import { servicePages } from "../data/services";
+import { serviceAreaPages } from "../data/serviceAreas";
+
+// Service cards. Titles carry the words people actually search for
+// (couch removal, trash pickup, garage cleanouts), each links to its own
+// sitelink page where one exists.
+const haulCards = [
+  { title: "Furniture & Couch Removal", slug: "furniture-mattresses", text: "Couches, sectionals, mattresses and bed frames carried out by a two-person crew. Single pieces or whole rooms." },
+  { title: "Appliance Removal", slug: "appliances", text: servicePages.find((s) => s.slug === "appliances")?.heroBlurb ?? "" },
+  { title: "Junk & Large Trash Pickup", slug: null, text: "The bulky stuff your regular trash pickup won't take. Point to it, we load it and haul it away." },
+  { title: "Garage, Estate & Full Cleanouts", slug: "estate-full-cleanouts", text: "From a packed garage to a whole home after a downsize or a loss. We handle the hauling so you can focus on everything else." },
+  { title: "Yard Waste & Debris", slug: "yard-waste-debris", text: servicePages.find((s) => s.slug === "yard-waste-debris")?.heroBlurb ?? "" },
+  { title: "Construction Debris", slug: "construction-debris", text: servicePages.find((s) => s.slug === "construction-debris")?.heroBlurb ?? "" },
+  { title: "Student Move-Outs", slug: "student-move-outs", text: "Apartment and dorm clear-outs for students, parents and landlords around Ole Miss." },
+];
+
+const steps = [
+  { n: "1", title: "Call, text or send the form", text: "Tell us what needs to go and roughly how much there is." },
+  { n: "2", title: "Get a flat-rate quote", text: "Priced by how much space your load takes in the trailer, not by the hour." },
+  { n: "3", title: "We haul it away", text: "Same-day pickup when we have an opening. We load everything, you don't lift a thing." },
+];
+
+const faqs = [
+  { q: "How much does junk removal cost in Oxford?", a: `We price by load size: ${pricingTiers.map((t) => `${t.name} ${t.price}`).join(", ")}. A single couch or mattress is usually a Small Load. We confirm the final price on site before we touch anything.` },
+  ...servicePages.flatMap((s) => s.faqs).filter((f) => /second-floor|refrigerator|dumpster/i.test(f.q)),
+  { q: "Do you offer same-day junk pickup?", a: "Yes, when we have an opening. Call or text early in the day for the best chance at a same-day slot." },
+];
+---
+
+<!-- Reviews -->
+<section class="bg-paper border-b border-ink/10">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+    <div class="reveal flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8">
+      <div>
+        <p class="font-mono text-xs uppercase tracking-widest text-terracotta mb-2">What Oxford customers say</p>
+        <h2 class="font-display text-3xl sm:text-4xl text-pine-2">Rated {reviewStats.ratingValue.toFixed(1)} on Google</h2>
+      </div>
+      <p class="flex items-center gap-2 text-ink-soft text-sm">
+        <span class="flex gap-0.5 text-terracotta">
+          {Array.from({ length: 5 }).map(() => <Icon name="star" class="w-4 h-4" />)}
+        </span>
+        {reviewStats.reviewCount} Google reviews
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-4">
+      {googleReviews.map((r) => (
+        <figure class="reveal bg-cream border border-ink/10 p-5 flex flex-col gap-3">
+          <span class="flex gap-0.5 text-terracotta">
+            {Array.from({ length: 5 }).map(() => <Icon name="star" class="w-4 h-4" />)}
+          </span>
+          <blockquote class="text-ink leading-relaxed">"{r.text}"</blockquote>
+          <figcaption class="font-mono text-xs uppercase tracking-widest text-ink-faint mt-auto">{r.author}, Google review</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- What we haul -->
+<section class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+  <div class="reveal mb-8">
+    <p class="font-mono text-xs uppercase tracking-widest text-terracotta mb-2">What we haul</p>
+    <h2 class="font-display text-3xl sm:text-4xl text-pine-2">Junk Pickup, Hauling & Cleanouts</h2>
+    <p class="text-ink-soft mt-3 max-w-2xl">Here is what we pick up most often around Oxford and Lafayette County.</p>
+  </div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {haulCards.map((c) => (
+      c.slug ? (
+        <a href={`/services/${c.slug}/`} class="reveal group block bg-paper border border-ink/10 hover:border-terracotta p-5 transition-colors">
+          <h3 class="font-display text-xl text-pine-2 group-hover:text-terracotta transition-colors">{c.title}</h3>
+          <p class="text-ink-soft text-sm mt-2 leading-relaxed">{c.text}</p>
+        </a>
+      ) : (
+        <div class="reveal bg-paper border border-ink/10 p-5">
+          <h3 class="font-display text-xl text-pine-2">{c.title}</h3>
+          <p class="text-ink-soft text-sm mt-2 leading-relaxed">{c.text}</p>
+        </div>
+      )
+    ))}
+  </div>
+</section>
+
+<!-- Pricing + how it works -->
+<section class="bg-pine-2 text-cream">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16 grid lg:grid-cols-2 gap-12">
+    <div class="reveal">
+      <p class="font-mono text-xs uppercase tracking-widest text-terracotta-light mb-2">Flat-rate pricing</p>
+      <h2 class="font-display text-3xl sm:text-4xl">Junk Removal From $199</h2>
+      <p class="text-cream/75 mt-3">Priced by load size. The price we quote is the price you pay.</p>
+      <div class="grid grid-cols-2 gap-3 mt-6">
+        {pricingTiers.map((t) => (
+          <div class="border border-dashed border-cream/30 px-4 py-4">
+            <p class="font-mono text-xs uppercase tracking-widest text-cream/60">{t.name}</p>
+            <p class="font-display text-3xl text-terracotta-light mt-1">{t.price}</p>
+          </div>
+        ))}
+      </div>
+      <p class="text-cream/60 text-sm mt-4">Final price confirmed on site, before we touch anything.</p>
+    </div>
+    <div class="reveal">
+      <p class="font-mono text-xs uppercase tracking-widest text-terracotta-light mb-2">How it works</p>
+      <h2 class="font-display text-3xl sm:text-4xl">Three Steps, No Heavy Lifting</h2>
+      <ol class="mt-6 space-y-5">
+        {steps.map((s) => (
+          <li class="flex gap-4">
+            <span class="font-display text-3xl text-terracotta-light leading-none w-8 shrink-0">{s.n}</span>
+            <span>
+              <span class="block font-medium">{s.title}</span>
+              <span class="block text-cream/70 text-sm mt-1">{s.text}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- Service area -->
+<section class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+  <div class="reveal mb-6">
+    <p class="font-mono text-xs uppercase tracking-widest text-terracotta mb-2">Service area</p>
+    <h2 class="font-display text-3xl sm:text-4xl text-pine-2">Junk Removal Near You</h2>
+    <p class="text-ink-soft mt-3 max-w-2xl">Based in Oxford, MS. We haul junk across Lafayette County and nearby towns.</p>
+  </div>
+  <div class="reveal flex flex-wrap gap-3">
+    {serviceAreaPages.map((a) => (
+      <a href={`/locations/${a.slug}/`} class="inline-flex items-center border border-pine/25 bg-pine-mist hover:border-terracotta px-4 py-2 font-mono text-xs uppercase tracking-widest text-pine transition-colors">
+        {a.name}
+      </a>
+    ))}
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="bg-paper border-t border-ink/10">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+    <h2 class="reveal font-display text-3xl sm:text-4xl text-pine-2 mb-6">Common Questions</h2>
+    <div class="space-y-6">
+      {faqs.map((f) => (
+        <div class="reveal">
+          <p class="font-medium text-ink">{f.q}</p>
+          <p class="text-ink-soft mt-1 leading-relaxed">{f.a}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Final call to action -->
+<section class="bg-terracotta text-cream">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 pb-24 lg:pb-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+    <div>
+      <h2 class="font-display text-3xl sm:text-4xl">Ready to get rid of it?</h2>
+      <p class="text-cream/85 mt-1">Free quote by phone, text or form. Same-day pickup when available.</p>
+    </div>
+    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+      <a href={business.phoneHref} class="inline-flex items-center justify-center gap-2 bg-pine-2 hover:bg-pine text-cream font-display text-xl tracking-wide px-6 py-3 transition-colors">
+        <Icon name="phone" class="w-4 h-4" /> {business.phone}
+      </a>
+      <a href="#quote" class="inline-flex items-center justify-center border border-cream/60 hover:bg-cream hover:text-terracotta font-mono text-xs uppercase tracking-widest px-6 py-3 transition-colors">
+        Get a free quote
+      </a>
+    </div>
+  </div>
+</section>

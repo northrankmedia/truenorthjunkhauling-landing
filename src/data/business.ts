@@ -12,12 +12,21 @@ export const business = {
   mainSiteUrl: "https://www.truenorthjunkhauling.com",
 } as const;
 
-// Confirmed live on the GBP listing 2026-09-01 (5.0, 9 reviews). Update by
+// Confirmed live on the GBP listing 2026-11-06 (5.0, 14 reviews). Update by
 // hand whenever the count materially changes.
 export const reviewStats = {
   ratingValue: 5.0,
-  reviewCount: 9,
+  reviewCount: 14,
 } as const;
+
+// Real Google reviews, copied word for word from the GBP listing on
+// 2026-11-06 (all 5 stars). Surname shortened to an initial. Never edit the
+// wording or add a review that isn't on the listing.
+export const googleReviews = [
+  { author: "Blake L.", text: "Great experience with Kevin. Him and his crew are true professionals and get the job done quickly and safely. Would highly recommend." },
+  { author: "Micah R.", text: "Kevin and his guys do a great job. No complaints, they come in and get the job done." },
+  { author: "Annemarie C.", text: "Amazing move-in by Kevin and team. Handled move-in for my daughter’s new apartment in Oxford before she arrived from New Jersey. Thank you Kevin!!" },
+] as const;
 
 export const trustBadges = [
   { label: "Same-Day Pickup", icon: "clock" },
