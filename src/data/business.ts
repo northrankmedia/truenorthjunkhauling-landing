@@ -10,6 +10,10 @@ export const business = {
   smsHref: "sms:+16629120777",
   siteUrl: "https://site.truenorthjunkhauling.com",
   mainSiteUrl: "https://www.truenorthjunkhauling.com",
+  // Web3Forms access key (public by design, safe in page HTML). Created by
+  // Kevin at web3forms.com with the email where leads should land. Empty =
+  // the form isn't wired yet, do NOT deploy.
+  web3formsKey: "481b4702-af22-443a-82fa-1e14503c1251",
 } as const;
 
 // Confirmed live on the GBP listing 2026-11-06 (5.0, 14 reviews). Update by

@@ -35,6 +35,16 @@ const fullTitle = title.includes("True North") ? title : `${title} | True North 
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+      // Enhanced conversions: the quote form saves the email/phone the
+      // person typed; set it before config so the /thank-you conversion
+      // carries it (the tag hashes it before sending). Used once, then cleared.
+      try {
+        var tnUd = JSON.parse(sessionStorage.getItem('tn_ud') || 'null');
+        if (tnUd && location.pathname.indexOf('/thank-you') === 0) {
+          gtag('set', 'user_data', tnUd);
+          sessionStorage.removeItem('tn_ud');
+        }
+      } catch (e) {}
       gtag('config', 'AW-18447548524');
     </script>
     <!-- Click-to-call conversion: fires on any tel: link, header, hero,
@@ -90,8 +100,6 @@ const fullTitle = title.includes("True North") ? title : `${title} | True North 
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://link.northrankmedia.com" />
-    <link rel="dns-prefetch" href="https://link.northrankmedia.com" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
