@@ -47,6 +47,51 @@ const fullTitle = title.includes("True North") ? title : `${title} | True North 
       } catch (e) {}
       gtag('config', 'AW-18447548524');
     </script>
+    <!-- Website call conversion ("Calls from website (forwarding)", re-added
+         2026-11-13): only for visitors who came from an ad, Google serves a
+         forwarding number that rings through to Kevin's real line and logs
+         calls of 60s+, including numbers dialed by hand. Everyone else, and
+         the main website, keep seeing (662) 912-0777. The callback swaps the
+         visible text and the tel: hrefs (the default swap only touches text).
+         sms: links keep the real number: forwarding numbers can't get texts. -->
+    <script is:inline>
+      gtag('config', 'AW-18447548524/L-ttCOiI67cdEOyAvdxE', {
+        'phone_conversion_number': '(662) 912-0777',
+        'phone_conversion_callback': function (formattedNumber, mobileNumber) {
+          if (!formattedNumber) return;
+          // Safety check (no paid test click possible): only swap in a
+          // real-looking US number. Anything like 999-9999, a 555/900/800-type
+          // or malformed number is ignored, and the page keeps Kevin's
+          // real (662) 912-0777.
+          var ten = String(mobileNumber || formattedNumber).replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+          if (!/^[2-9]\d{2}[2-9]\d{6}$/.test(ten)) return;
+          if (/(\d)\1{5,}/.test(ten)) return;
+          if (/^(555|900|800|833|844|855|866|877|888)/.test(ten)) return;
+          window.tnForwardingNumber = formattedNumber;
+          var swap = function () {
+            var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            var node;
+            while ((node = walker.nextNode())) {
+              var tag = node.parentNode && node.parentNode.nodeName;
+              if (tag === 'SCRIPT' || tag === 'STYLE') continue;
+              if (node.nodeValue.indexOf('(662) 912-0777') !== -1) {
+                node.nodeValue = node.nodeValue.split('(662) 912-0777').join(formattedNumber);
+              }
+            }
+            var digits = String(mobileNumber || formattedNumber).replace(/[^\d+]/g, '');
+            if (digits.charAt(0) !== '+') digits = '+1' + digits.replace(/^1/, '');
+            document.querySelectorAll('a[href^="tel:+16629120777"]').forEach(function (a) {
+              a.setAttribute('href', 'tel:' + digits);
+            });
+          };
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', swap);
+          } else {
+            swap();
+          }
+        }
+      });
+    </script>
     <!-- Click-to-call conversion: fires on any tel: link, header, hero,
          sticky mobile bar, thank-you page, without needing an onclick
          attribute on each one individually. Tel: links don't unload the
