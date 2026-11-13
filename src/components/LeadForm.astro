@@ -35,6 +35,8 @@ const labelClass = "block font-mono text-xs uppercase tracking-widest text-ink/7
     <input type="hidden" name="redirect" value={redirectUrl} />
     <input type="hidden" name="page" value="" data-field-page />
     <input type="hidden" name="gclid" value="" data-field-gclid />
+    <!-- Which phone number this visitor saw (Google call tracking), filled on submit. -->
+    <input type="hidden" name="number_shown" value="" data-field-number />
     <!-- Honeypot: real people never see or tick this; bots that do get dropped. -->
     <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
 
@@ -101,6 +103,18 @@ const labelClass = "block font-mono text-xs uppercase tracking-widest text-ink/7
         if (email) data.email = email;
         if (digits.length === 11) data.phone_number = "+" + digits;
         try { sessionStorage.setItem("tn_ud", JSON.stringify(data)); } catch (e) {}
+
+        // Read-only report of the number on screen; never blocks the submit.
+        try {
+          var num = form.querySelector("[data-field-number]");
+          if (num) {
+            num.value = window.tnForwardingNumber
+              ? window.tnForwardingNumber + " (Google tracking number)"
+              : window.tnGoogleNumber
+                ? "(662) 912-0777 real number (Google sent " + window.tnGoogleNumber + ", blocked)"
+                : "(662) 912-0777 real number";
+          }
+        } catch (e) {}
 
         var btn = form.querySelector("[data-submit]");
         if (btn) { btn.disabled = true; btn.textContent = "Sending..."; }

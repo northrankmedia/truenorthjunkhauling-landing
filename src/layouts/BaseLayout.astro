@@ -59,6 +59,7 @@ const fullTitle = title.includes("True North") ? title : `${title} | True North 
         'phone_conversion_number': '(662) 912-0777',
         'phone_conversion_callback': function (formattedNumber, mobileNumber) {
           if (!formattedNumber) return;
+          window.tnGoogleNumber = formattedNumber;
           // Safety check (no paid test click possible): only swap in a
           // real-looking US number. Anything like 999-9999, a 555/900/800-type
           // or malformed number is ignored, and the page keeps Kevin's
