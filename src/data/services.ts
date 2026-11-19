@@ -113,7 +113,7 @@ export const servicePages: ServicePage[] = [
     description:
       "Anyone who's lived through move-out week near campus knows the problem: complex dumpsters overflow by the second day, and everyone is trying to move out on the same weekend. We run a dedicated process for student move-outs, scheduled around the actual Ole Miss academic calendar, so you're not competing with an overflowing dumpster for space.",
     pricingNote:
-      "A single dorm room or shared bedroom is usually a Small Load ($199+). A full apartment move-out typically runs Medium ($299+) to Large ($499+).",
+      "A single dorm room or shared bedroom is usually a Small Load ($199+). A full apartment move-out typically runs Medium ($299+) to Large ($499+). Fraternity and sorority house cleanouts are quoted on site.",
     faqs: [
       {
         q: "Can you schedule around the exact Ole Miss move-out weekend?",
