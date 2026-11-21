@@ -28,8 +28,9 @@ const labelClass = "block font-mono text-xs uppercase tracking-widest text-ink/7
     method="POST"
     class="flex flex-col gap-4"
     data-lead-form
+    data-k={business.web3formsKey.split("").reverse().join("")}
   >
-    <input type="hidden" name="access_key" value={business.web3formsKey} />
+    <input type="hidden" name="access_key" value="" />
     <input type="hidden" name="subject" value="New quote request from the website" />
     <input type="hidden" name="from_name" value="True North Website" />
     <input type="hidden" name="redirect" value={redirectUrl} />
@@ -88,6 +89,34 @@ const labelClass = "block font-mono text-xs uppercase tracking-widest text-ink/7
     document.querySelectorAll("form[data-lead-form]").forEach(function (form) {
       if (form.dataset.wired) return;
       form.dataset.wired = "1";
+
+      // Spam guard (2026-11-21): bots were posting the raw HTML form straight
+      // to Web3Forms (SEO/blog spam). The access key is no longer in the HTML;
+      // it is set here, only for submissions that pass these checks. Spam gets
+      // a fake "thanks" and is never sent.
+      var t0 = Date.now();
+      form.addEventListener("submit", function (e) {
+        var el = form.elements, nm = el["name"].value || "", det = (el["details"] && el["details"].value) || "", em = (el["email"] && el["email"].value) || "";
+        var tx = (nm + " " + det).replace(/\S+@\S+\.\w+/g, "");
+        var spam = (Date.now() - t0 < 3000) ||
+          /https?:|www\.|\.(com|net|org|io|co|biz|info)\b/i.test(tx) ||
+          /\b(seo|backlinks?|blog (articles|posts)|guest posts?|web ?design|marketing services|rank(ing)? (your|on))\b/i.test(tx) ||
+          /www\./i.test(em);
+        if (spam) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          form.innerHTML = '<p class="text-center text-ink py-8">Thanks, we got your request.</p>';
+          return;
+        }
+        var ph = (el["phone"].value || "").replace(/\D/g, "");
+        if (!(ph.length === 10 || (ph.length === 11 && ph.charAt(0) === "1"))) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          alert("Please enter a 10-digit phone number so we can call or text you back.");
+          return;
+        }
+        el["access_key"].value = (form.getAttribute("data-k") || "").split("").reverse().join("");
+      });
       var page = form.querySelector("[data-field-page]");
       var gc = form.querySelector("[data-field-gclid]");
       if (page) page.value = location.pathname;
